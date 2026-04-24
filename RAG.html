@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studify RAG Architecture - Landscape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#12122A',
+                        purple: '#3A1B67',
+                        magenta: '#D9237A',
+                        orange: '#FF6B35',
+                    },
+                    fontFamily: {
+                        title: ['Montserrat', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #e5e7eb; /* Poster mockup background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+        }
+        .diagram-container {
+            width: 100%;
+            max-width: 1400px; /* Wide landscape format */
+            background: linear-gradient(145deg, #12122A 0%, #1a1a3a 100%);
+            border-radius: 28px;
+            padding: 3.5rem;
+            box-shadow: 0 25px 50px -12px rgba(58, 27, 103, 0.4);
+            border: 2px solid rgba(217, 35, 122, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Tech Grid Background */
+        .diagram-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 35px 35px;
+            z-index: 0;
+        }
+        .content-z {
+            position: relative;
+            z-index: 10;
+        }
+        /* Glowing Panels */
+        .glow-box-magenta {
+            box-shadow: 0 0 25px rgba(217, 35, 122, 0.15);
+            border: 1px solid rgba(217, 35, 122, 0.4);
+        }
+        .glow-box-purple {
+            box-shadow: 0 0 30px rgba(58, 27, 103, 0.5);
+            border: 1px solid rgba(138, 79, 255, 0.5);
+        }
+        .glow-box-orange {
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.4);
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: white;
+            position: absolute;
+            top: -18px;
+            left: -18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        .floating-dash {
+            position: absolute;
+            border-left: 2px dashed rgba(255,255,255,0.1);
+            height: 100%;
+            left: 50%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="diagram-container">
+        
+        <!-- Header -->
+        <div class="content-z text-center mb-12">
+            <h2 class="font-title text-4xl md:text-5xl text-white font-black tracking-wide">STUDIFY RAG AI ARCHITECTURE</h2>
+            <p class="font-body text-magenta mt-3 font-semibold tracking-[0.2em] text-sm uppercase">Retrieval-Augmented Generation Flow</p>
+        </div>
+
+        <!-- Main Landscape Layout -->
+        <div class="content-z flex flex-row items-stretch gap-4 w-full">
+
+            <!-- LEFT SIDE: ACTORS & PIPELINES (80% width) -->
+            <div class="flex flex-col gap-12 w-[80%]">
+
+                <!-- TOP TRACK: INGESTION -->
+                <div class="flex flex-row items-center w-full">
+                    
+                    <!-- 1. Actor: Tutor -->
+                    <div class="w-[20%] flex flex-col items-center text-center px-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple to-magenta rounded-full flex items-center justify-center mb-4 shadow-xl">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <span class="font-title text-white font-bold text-lg">Tutor</span>
+                        <span class="text-white/60 text-sm mt-1">Uploads Video Lesson</span>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="w-[8%] flex justify-center text-magenta/60">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+
+                    <!-- 2. Pipeline: Data Processing -->
+                    <div class="w-[72%] glow-box-magenta bg-white/5 rounded-2xl p-6 relative">
+                        <div class="step-number bg-magenta">1</div>
+                        <div class="flex justify-between items-center mb-5 border-b border-magenta/30 pb-2">
+                            <div class="text-magenta text-sm font-bold uppercase tracking-wider">Data Processing Pipeline</div>
+                            <div class="text-magenta/50 text-xs font-semibold">Background Job</div>
+                        </div>
+                        
+                        <div class="flex flex-row gap-4 justify-between items-center">
+                            <!-- Box 1.1 -->
+                            <div class="bg-navy/80 p-5 rounded-xl text-center flex-1 border border-white/10 hover:border-magenta/50 transition-colors">
+                                <svg class="w-7 h-7 text-magenta mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                                <div class="font-body text-white font-bold text-sm">Speech-to-Text</div>
+                                <!-- <div class="text-white/50 text-[11px] mt-2">Deepgram Whisper API</div> -->
+                            </div>
+                            <svg class="w-6 h-6 text-white/20 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            
+                            <!-- Box 1.2 -->
+                            <div class="bg-navy/80 p-5 rounded-xl text-center flex-1 border border-white/10 hover:border-magenta/50 transition-colors">
+                                <svg class="w-7 h-7 text-magenta mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                                <div class="font-body text-white font-bold text-sm">Semantic Chunking</div>
+                                <!-- <div class="text-white/50 text-[11px] mt-2">Gemini AI Engine</div> -->
+                            </div>
+                            <svg class="w-6 h-6 text-white/20 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+
+                            <!-- Box 1.3 -->
+                            <div class="bg-navy/80 p-5 rounded-xl text-center flex-1 border border-white/10 hover:border-magenta/50 transition-colors">
+                                <svg class="w-7 h-7 text-magenta mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                                <div class="font-body text-white font-bold text-sm">Vectorization</div>
+                                <div class="text-white/50 text-[11px] mt-2">Text-Embedding Models</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BOTTOM TRACK: CONSUMPTION -->
+                <div class="flex flex-row items-center w-full">
+                    
+                    <!-- 1. Actor: Student -->
+                    <div class="w-[20%] flex flex-col items-center text-center px-4 relative">
+                        <div class="step-number bg-white text-navy !left-[10%] !top-0">3</div>
+                        <div class="w-20 h-20 bg-gradient-to-br from-orange to-red-500 rounded-full flex items-center justify-center mb-4 shadow-xl shadow-orange/20">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </div>
+                        <span class="font-title text-white font-bold text-lg">Student</span>
+                        <span class="text-white/60 text-sm mt-1">Queries AI Assistant</span>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="w-[8%] flex justify-center text-orange/60">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+
+                    <!-- 2. Pipeline: Retrieval & Synthesis -->
+                    <div class="w-[72%] glow-box-orange bg-orange/5 rounded-2xl p-6 relative">
+                        <div class="step-number bg-orange">4</div>
+                        <div class="flex justify-between items-center mb-5 border-b border-orange/30 pb-2">
+                            <div class="text-orange text-sm font-bold uppercase tracking-wider">Retrieval & Generation</div>
+                            <div class="text-orange/50 text-xs font-semibold">Real-Time Interaction</div>
+                        </div>
+                        
+                        <div class="flex flex-row gap-4 justify-between items-center">
+                            <!-- Box 2.1 -->
+                            <div class="bg-navy/80 p-5 rounded-xl text-center flex-1 border border-orange/20 hover:border-orange/50 transition-colors">
+                                <svg class="w-7 h-7 text-orange mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <div class="font-body text-white font-bold text-sm">Similarity Search</div>
+                                <div class="text-white/50 text-[11px] mt-2">Find Relevant Context</div>
+                            </div>
+                            <svg class="w-6 h-6 text-orange/40 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            
+                            <!-- Box 2.2 -->
+                            <div class="bg-navy/80 p-5 rounded-xl text-center flex-1 border border-orange/20 hover:border-orange/50 transition-colors">
+                                <svg class="w-7 h-7 text-orange mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                <div class="font-body text-white font-bold text-sm">LLM Synthesis</div>
+                                <div class="text-white/50 text-[11px] mt-2">Generate Best Answer</div>
+                            </div>
+                            <svg class="w-6 h-6 text-orange/40 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+
+                            <!-- Box 2.3 -->
+                            <div class="bg-orange/20 p-5 rounded-xl text-center flex-1 border-2 border-orange relative overflow-hidden">
+                                <!-- highlight glow -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-orange/20 to-transparent"></div>
+                                <svg class="w-7 h-7 text-orange mx-auto mb-3 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div class="font-body text-white font-bold text-sm relative z-10">Timestamped Output</div>
+                                <div class="text-white/80 text-[11px] mt-2 relative z-10">Precise Video Navigation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- MIDDLE ARROWS CONNECTION -->
+            <div class="flex flex-col w-[5%] justify-around items-center py-10 relative">
+                <!-- Data Flow In -->
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-white/50 font-bold uppercase mb-1">Store</span>
+                    <svg class="w-10 h-10 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
+                
+                <!-- Data Flow Out (Search) -->
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-orange/70 font-bold uppercase mb-1">Query</span>
+                    <svg class="w-10 h-10 text-orange/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: DATABASE (15% width) -->
+            <div class="w-[15%] flex flex-col h-full">
+                <div class="flex-1 glow-box-purple bg-[#1e1e40] rounded-3xl p-6 relative flex flex-col items-center justify-center border-2 border-purple/60">
+                    <div class="step-number bg-purple text-white !-left-4 !top-4">2</div>
+                    
+                    <div class="p-5 bg-purple/30 rounded-2xl mb-6 shadow-inner shadow-purple/50 border border-purple/30">
+                        <svg class="w-12 h-12 text-[#a78bfa]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                    </div>
+                    
+                    <div class="text-[#a78bfa] text-xs font-bold uppercase tracking-widest text-center mb-2">Knowledge Base</div>
+                    <div class="font-title text-white font-bold text-2xl text-center leading-tight mb-4">Cloud<br>Vector DB</div>
+                    
+                    <div class="bg-navy/50 p-4 rounded-xl border border-white/5 w-full">
+                        <div class="text-white/80 text-xs text-center leading-relaxed font-medium">
+                            Supabase pgvector
+                        </div>
+                        <div class="text-white/50 text-[10px] text-center mt-2 leading-relaxed">
+                            High-dimensional embeddings paired with exact video timestamps
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
